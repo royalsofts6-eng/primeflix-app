@@ -104,7 +104,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       _brightness = await ScreenBrightness().current;
     } catch (_) {}
     try {
-      _volume = await VolumeController().getVolume();
+      _volume = await VolumeController.instance.getVolume();
     } catch (_) {}
   }
 
@@ -441,7 +441,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       _flash('${(_brightness * 100).round()}%', Icons.brightness_6_rounded);
     } else {
       _volume = (_volume + delta).clamp(0.0, 1.0);
-      VolumeController().setVolume(_volume, showSystemUI: false);
+      VolumeController.instance.setVolume(_volume, showSystemUI: false);
       _flash('${(_volume * 100).round()}%',
           _volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded);
     }
