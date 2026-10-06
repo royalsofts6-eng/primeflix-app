@@ -101,7 +101,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   Future<void> _initGestureValues() async {
     try {
-      _brightness = await ScreenBrightness().current;
+      _brightness = await ScreenBrightness.instance.current;
     } catch (_) {}
     try {
       _volume = await VolumeController.instance.getVolume();
@@ -437,7 +437,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     final delta = -d.delta.dy / (height * 0.7);
     if (_dragLeft) {
       _brightness = (_brightness + delta).clamp(0.0, 1.0);
-      ScreenBrightness().setScreenBrightness(_brightness).catchError((_) {});
+      ScreenBrightness.instance.setScreenBrightness(_brightness).catchError((_) {});
       _flash('${(_brightness * 100).round()}%', Icons.brightness_6_rounded);
     } else {
       _volume = (_volume + delta).clamp(0.0, 1.0);
@@ -708,7 +708,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
     _saveTimer?.cancel();
     _bp?.removeEventsListener(_onPlayerEvent);
     _bp?.dispose(forceDispose: true);
-    ScreenBrightness().resetScreenBrightness().catchError((_) {});
+    ScreenBrightness.instance.resetScreenBrightness().catchError((_) {});
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
