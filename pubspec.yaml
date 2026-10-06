@@ -4,13 +4,13 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.4.0 <4.0.0"
+  sdk: ">=3.11.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.0
-  better_player_plus: ^1.1.5      # maintained fork (Media3, AGP 8 ready)
+  better_player_plus: ^1.4.1      # 1.4.0+ adds R8/Proguard consumer rules; needs Dart 3.11 / Flutter 3.41+
   cached_network_image: ^3.3.0
   shared_preferences: ^2.2.0
   shimmer: ^3.0.0
