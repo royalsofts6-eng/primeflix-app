@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.0
-  better_player_plus: ^1.0.8      # maintained fork (Media3, AGP 8 ready)
+  better_player_plus: ^1.1.5      # maintained fork (Media3, AGP 8 ready)
   cached_network_image: ^3.3.0
   shared_preferences: ^2.2.0
   shimmer: ^3.0.0
