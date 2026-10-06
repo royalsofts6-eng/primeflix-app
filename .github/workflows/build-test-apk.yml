@@ -1,0 +1,53 @@
+name: Build Test APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        
+    - name: Create minimal test app
+      run: |
+        flutter create --org com.test --project-name test_app testapp
+        cd testapp
+        # Replace main.dart with minimal version
+        cat > lib/main.dart << 'EOF'
+        import 'package:flutter/material.dart';
+        void main() => runApp(const TestApp());
+        class TestApp extends StatelessWidget {
+          const TestApp({super.key});
+          @override
+          Widget build(BuildContext context) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Center(child: Text('Test OK!')),
+              ),
+            );
+          }
+        }
+        EOF
+        cat lib/main.dart
+        
+    - name: Build Test APK
+      run: |
+        cd testapp
+        flutter build apk --release
+      
+    - name: Upload Test APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-apk
+        path: testapp/build/app/outputs/flutter-apk/app-release.apk
