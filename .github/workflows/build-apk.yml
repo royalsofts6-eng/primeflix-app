@@ -27,6 +27,17 @@ jobs:
         rm -rf android
         flutter create --org com.primeflix --project-name primeflix_app --platforms=android .
         
+    - name: Fix JVM target for old plugins
+      run: |
+        cat >> android/app/build.gradle << 'EOF'
+        
+        // Fix for volume_controller Kotlin JVM target mismatch
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions.jvmTarget = "11"
+        }
+        EOF
+        echo "JVM fix applied"
+        
     - name: Get dependencies
       run: flutter pub get
       
@@ -44,6 +55,7 @@ jobs:
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: primeflix-apk
         path: build/app/outputs/flutter-apk/app-release.apk
