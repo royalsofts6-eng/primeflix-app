@@ -27,25 +27,22 @@ jobs:
         rm -rf android
         flutter create --org com.primeflix --project-name primeflix_app --platforms=android .
         
+    - name: Add permissions to Manifest
+      run: |
+        MANIFEST="android/app/src/main/AndroidManifest.xml"
+        # Add INTERNET permission before <application> tag
+        sed -i 's|<application|<uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n    <application|' "$MANIFEST"
+        echo "=== Manifest permissions ==="
+        grep -A2 "uses-permission" "$MANIFEST" | head -5
+        
     - name: Get dependencies
       run: flutter pub get
       
     - name: Build Release APK
-      run: |
-        flutter build apk --release 2>&1 | tee build.log
-        test ${PIPESTATUS[0]} -eq 0
-      continue-on-error: true
+      run: flutter build apk --release
       
-    - name: Upload build log
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: build-log
-        path: build.log
-        
     - name: Upload APK
       uses: actions/upload-artifact@v4
-      if: success()
       with:
         name: primeflix-apk
         path: build/app/outputs/flutter-apk/app-release.apk
