@@ -441,7 +441,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
       _flash('${(_brightness * 100).round()}%', Icons.brightness_6_rounded);
     } else {
       _volume = (_volume + delta).clamp(0.0, 1.0);
-      VolumeController.instance.setVolume(_volume, showSystemUI: false);
+      VolumeController.instance.setVolume(_volume);
       _flash('${(_volume * 100).round()}%',
           _volume == 0 ? Icons.volume_off_rounded : Icons.volume_up_rounded);
     }
